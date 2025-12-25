@@ -24,14 +24,14 @@ const GlobalPresence = () => {
     ];
 
     return (
-        <section className="bg-[#0A0A0A] py-32 md:py-48 relative overflow-hidden">
+        <section className="bg-[#0A0A0A] py-12 md:py-24 relative overflow-hidden">
             {/* Subtle Gradient Glows */}
             <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-[#fae606]/5 rounded-full blur-[150px] pointer-events-none"></div>
             <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-white/5 rounded-full blur-[150px] pointer-events-none"></div>
 
             <div className="container mx-auto px-6 md:px-12 lg:px-20 max-w-[1440px] relative z-10">
                 {/* Editorial Header */}
-                <div className="max-w-4xl mx-auto text-center mb-24">
+                <div className="max-w-4xl mx-auto text-center mb-12">
                     <div className="flex items-center justify-center gap-4 mb-8">
                         <div className="w-12 h-[1px] bg-gradient-to-r from-transparent via-[#fae606] to-transparent"></div>
                         <span className="text-[#fae606] font-bold tracking-[0.4em] text-[10px] md:text-xs uppercase">International Distribution</span>

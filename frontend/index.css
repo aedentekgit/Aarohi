@@ -22,7 +22,6 @@
 
 html,
 :root {
-  scroll-behavior: smooth;
   font-family: var(--font-sans);
   background-color: var(--color-primary);
   color: white;

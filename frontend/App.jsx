@@ -24,11 +24,24 @@ import AdminGallery from './pages/AdminGallery';
 import ProductsPage from './pages/ProductsPage';
 import GalleryPage from './pages/GalleryPage';
 
+import ScrollToTopButton from './components/ScrollToTopButton';
+
+const ScrollToTop = () => {
+    const { pathname } = useLocation();
+
+    React.useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
+
+    return null;
+};
+
 const Layout = ({ children }) => (
     <div className="min-h-screen bg-[#FAFAFA]">
         <Navbar />
         {children}
         <Footer />
+        <ScrollToTopButton />
     </div>
 );
 
@@ -79,9 +92,36 @@ function AnimatedRoutes() {
     );
 }
 
+import Lenis from 'lenis';
+
 function App() {
+    React.useEffect(() => {
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            mouseMultiplier: 1,
+            smoothTouch: false,
+            touchMultiplier: 2,
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+
+        requestAnimationFrame(raf);
+
+        return () => {
+            lenis.destroy();
+        };
+    }, []);
+
     return (
         <Router>
+            <ScrollToTop />
             <AnimatedRoutes />
         </Router>
     );

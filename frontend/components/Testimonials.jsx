@@ -97,7 +97,7 @@ const Testimonials = () => {
                     {reviews.map((r, i) => (
                         <div
                             key={i}
-                            className="relative shrink-0 w-[85vw] lg:w-auto snap-center group p-10 md:p-12 transition-all duration-500 bg-zinc-50 border border-zinc-100 rounded-[40px] hover:bg-zinc-950 hover:border-zinc-950 overflow-hidden shadow-sm hover:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.2)] hover:-translate-y-4"
+                            className="relative shrink-0 w-[85vw] lg:w-auto snap-center group p-10 md:p-12 transition-all duration-500 bg-white border border-zinc-200 rounded-[40px] hover:bg-zinc-950 hover:border-zinc-950 overflow-hidden shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] hover:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.2)] hover:-translate-y-4"
                         >
                             {/* Oversized Index Number */}
                             <span className="absolute -top-6 -right-2 text-[100px] font-black font-urbanist text-white group-hover:text-white/5 transition-colors z-0 select-none">

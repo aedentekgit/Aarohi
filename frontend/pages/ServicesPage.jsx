@@ -44,6 +44,31 @@ const AnimatedSection = ({ children, className = "", delay = 0, direction = "up"
     );
 };
 
+// Component to detect when a section is in view
+const InViewSection = ({ children, onInView, className = "" }) => {
+    const domRef = useRef();
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    onInView(true);
+                }
+            });
+        }, { threshold: 0.5 }); // Trigger when 50% visible
+
+        const currentRef = domRef.current;
+        if (currentRef) observer.observe(currentRef);
+        return () => { if (currentRef) observer.unobserve(currentRef); };
+    }, [onInView]);
+
+    return (
+        <div ref={domRef} className={className}>
+            {children}
+        </div>
+    );
+};
+
 const ServicesPage = () => {
     const [heroVisible, setHeroVisible] = useState(false);
     const [scrollY, setScrollY] = useState(0);
@@ -166,23 +191,20 @@ const ServicesPage = () => {
                         </p>
 
                         {/* Decorative Elements */}
-                        <div className={`flex items-center gap-8 mt-12 transition-all duration-1000 delay-[1100ms] ${heroVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
-                            <div className="flex items-center gap-4">
-                                <div className="w-14 h-14 rounded-full border border-[#fae606]/30 flex items-center justify-center backdrop-blur-md">
-                                    <Sparkles className="w-6 h-6 text-[#fae606]" />
+                        {/* Architectural Stat Display */}
+                        <div className={`relative mt-16 inline-block transition-all duration-1000 delay-[1100ms] ${heroVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
+                            <div className="flex items-center gap-6">
+                                {/* Large Number */}
+                                <div className="relative">
+                                    <span className="text-7xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-br from-[#fae606] to-white/20 font-['Playfair_Display'] opacity-90">
+                                        15K+
+                                    </span>
+                                    <div className="absolute -bottom-2 left-0 w-full h-[2px] bg-gradient-to-r from-[#fae606] to-transparent"></div>
                                 </div>
-                                <div>
-                                    <p className="text-[#fae606] font-black text-xl leading-none">Premium</p>
-                                    <p className="text-white/40 uppercase tracking-[0.2em] text-[10px] font-bold mt-1">Quality Assured</p>
-                                </div>
-                            </div>
-                            <div className="flex items-center gap-4">
-                                <div className="w-14 h-14 rounded-full border border-[#fae606]/30 flex items-center justify-center backdrop-blur-md">
-                                    <Star className="w-6 h-6 text-[#fae606] fill-[#fae606]" />
-                                </div>
-                                <div>
-                                    <p className="text-[#fae606] font-black text-xl leading-none">Global</p>
-                                    <p className="text-white/40 uppercase tracking-[0.2em] text-[10px] font-bold mt-1">Reach & Service</p>
+
+                                <div className="flex flex-col justify-center h-full pt-4">
+                                    <span className="text-white font-bold text-lg tracking-wide">Trusted</span>
+                                    <span className="text-white/40 text-[10px] uppercase tracking-[0.3em] mt-1">Global Clients</span>
                                 </div>
                             </div>
                         </div>
@@ -190,239 +212,100 @@ const ServicesPage = () => {
                 </div>
             </section>
 
-            {/* Services Section - Alternating Layout */}
-            <section className="py-24 md:py-32 bg-white">
-                <div className="container mx-auto px-6 md:px-12 lg:px-20 max-w-[1440px]">
+            {/* NEW: Sticky Split-Screen Experience */}
+            <section className="bg-white relative">
+                <div className="container mx-auto px-0 max-w-[1600px]">
 
-                    {/* Section Header */}
-                    <AnimatedSection className="text-center mb-20">
-                        <div className="flex items-center justify-center gap-4 mb-6">
-                            <Star className="w-5 h-5 text-[#fae606] fill-[#fae606]" />
-                            <span className="text-[#fae606] font-bold tracking-[0.3em] text-xs uppercase">What We Offer</span>
-                            <Star className="w-5 h-5 text-[#fae606] fill-[#fae606]" />
-                        </div>
-                        <h2 className="text-4xl md:text-6xl font-bold text-slate-900 mb-6 leading-tight font-['Playfair_Display']">
-                            Comprehensive Stone Solutions
-                        </h2>
-                        <p className="text-slate-600 text-lg leading-relaxed max-w-2xl mx-auto">
-                            From quarry to installation, we provide end-to-end services ensuring unmatched quality and craftsmanship at every stage.
-                        </p>
-                    </AnimatedSection>
+                    <div className="flex flex-col lg:flex-row">
 
-                    {/* Services - Alternating Layout */}
-                    <div className="space-y-32">
-                        {services.map((service, index) => (
-                            <AnimatedSection
-                                key={service.id}
-                                delay={index * 200}
-                                direction={index % 2 === 0 ? "left" : "right"}
-                            >
-                                <div className={`grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center ${index % 2 !== 0 ? 'lg:flex-row-reverse' : ''}`}>
-
-                                    {/* Image Side */}
-                                    <div className={`${index % 2 !== 0 ? 'lg:order-2' : ''} relative group`}>
-                                        {/* Decorative Background */}
-                                        <div className={`absolute -inset-6 bg-gradient-to-br ${service.color} opacity-10 rounded-[60px] transform ${index % 2 === 0 ? 'rotate-3' : '-rotate-3'} group-hover:rotate-6 transition-all duration-700`}></div>
-
-                                        {/* Image Container */}
-                                        <div className="relative overflow-hidden rounded-[40px] shadow-2xl">
-                                            <img
-                                                src={service.image}
-                                                alt={service.title}
-                                                className="w-full h-[400px] md:h-[500px] object-cover transition-all duration-[2000ms] group-hover:scale-110"
-                                            />
-                                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-
-                                            {/* Floating Number Badge */}
-                                            <div className="absolute top-8 left-8">
-                                                <div className={`text-8xl md:text-9xl font-black bg-gradient-to-br ${service.color} bg-clip-text text-transparent opacity-30 font-['Playfair_Display']`}>
-                                                    {service.id}
-                                                </div>
-                                            </div>
-                                        </div>
+                        {/* LEFT COLUMN: Sticky Image Deck (Desktop Only) */}
+                        <div className="hidden lg:block lg:w-1/2 h-screen sticky top-0 z-10 overflow-hidden bg-[#0F0F0F]">
+                            {services.map((service, index) => (
+                                <div
+                                    key={service.id}
+                                    className={`absolute inset-0 transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${activeService === index ? 'opacity-100 scale-100' : 'opacity-0 scale-110'
+                                        }`}
+                                >
+                                    <img
+                                        src={service.image}
+                                        alt={service.title}
+                                        className="w-full h-full object-cover opacity-60"
+                                    />
+                                    {/* Overlay Text on Image */}
+                                    <div className="absolute bottom-20 left-12 right-12 z-20">
+                                        <span className="text-8xl font-black text-white/10 font-['Playfair_Display'] block mb-2">
+                                            {service.id}
+                                        </span>
+                                        <div className="w-12 h-[2px] bg-[#fae606] mb-6"></div>
+                                        <p className="text-white/80 text-lg font-light max-w-md">
+                                            {service.subtitle}
+                                        </p>
                                     </div>
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                                </div>
+                            ))}
+                        </div>
 
-                                    {/* Content Side */}
-                                    <div className={`${index % 2 !== 0 ? 'lg:order-1' : ''}`}>
-                                        {/* Service Icon */}
-                                        <div className="flex items-center gap-4 mb-6">
-                                            <div className={`w-16 h-16 bg-gradient-to-br ${service.color} rounded-2xl flex items-center justify-center shadow-lg transform hover:rotate-12 transition-transform duration-500`}>
-                                                <service.icon className="w-8 h-8 text-white" strokeWidth={1.5} />
-                                            </div>
-                                            <div>
-                                                <p className="text-slate-400 text-xs uppercase tracking-widest font-bold">{service.subtitle}</p>
-                                                <p className="text-slate-300 text-2xl font-black">{service.id}</p>
+                        {/* RIGHT COLUMN: Scrolling Content */}
+                        <div className="w-full lg:w-1/2 bg-white">
+                            {services.map((service, index) => {
+                                // Logic to update active state
+                                const handleInView = (inView) => {
+                                    if (inView) setActiveService(index);
+                                };
+
+                                return (
+                                    <InViewSection key={service.id} onInView={handleInView} className="min-h-screen lg:min-h-[80vh] flex flex-col justify-center px-6 md:px-20 py-12 md:py-24 border-b border-gray-100">
+
+                                        {/* Mobile Only Image Header */}
+                                        <div className="lg:hidden mb-8 -mx-6 md:mx-0 md:rounded-3xl overflow-hidden h-[250px] relative shadow-lg">
+                                            <img src={service.image} alt={service.title} className="w-full h-full object-cover" />
+                                            <div className="absolute inset-0 bg-black/20"></div>
+                                            <div className="absolute bottom-4 left-6">
+                                                <span className="text-white/80 text-xs font-bold uppercase tracking-widest block mb-1">Step {service.id}</span>
+                                                <span className="text-white text-xl font-['Playfair_Display'] font-italic">{service.subtitle}</span>
                                             </div>
                                         </div>
 
-                                        {/* Title */}
-                                        <h3 className="text-3xl md:text-5xl font-bold text-slate-900 mb-6 font-['Playfair_Display']">
+                                        <div className="hidden lg:flex items-center gap-4 mb-8">
+                                            <div className="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center text-[#0F0F0F]">
+                                                <service.icon size={24} strokeWidth={1.5} />
+                                            </div>
+                                            <span className="text-zinc-400 font-bold uppercase tracking-[0.2em] text-sm">Step {service.id}</span>
+                                        </div>
+
+                                        <h3 className="text-3xl md:text-5xl lg:text-6xl font-black text-[#0F0F0F] mb-6 md:mb-8 font-['Playfair_Display'] leading-[1.1] md:leading-[0.9]">
                                             {service.title}
                                         </h3>
 
-                                        {/* Description */}
-                                        <p className="text-slate-600 text-lg leading-relaxed mb-8">
+                                        <p className="text-base md:text-lg text-zinc-500 leading-relaxed md:leading-loose mb-8 md:mb-12 font-light">
                                             {service.description}
                                         </p>
 
-                                        {/* Features List */}
-                                        <div className="space-y-4 mb-8">
+                                        {/* Specs Grid */}
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 bg-gray-50 p-6 md:p-8 rounded-2xl md:rounded-3xl border border-gray-100">
                                             {service.features.map((feature, idx) => (
-                                                <div
-                                                    key={idx}
-                                                    className="flex items-start gap-3 group/item hover:translate-x-2 transition-transform duration-300"
-                                                    style={{ transitionDelay: `${idx * 50}ms` }}
-                                                >
-                                                    <div className={`w-6 h-6 bg-gradient-to-br ${service.color} rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5`}>
-                                                        <CheckCircle2 className="w-4 h-4 text-white" strokeWidth={2.5} />
-                                                    </div>
-                                                    <span className="text-slate-700 font-medium">{feature}</span>
+                                                <div key={idx} className="flex items-start gap-3 md:gap-4">
+                                                    <CheckCircle2 className="w-4 h-4 md:w-5 md:h-5 text-[#fae606] mt-1 flex-shrink-0" />
+                                                    <span className="text-sm font-semibold text-zinc-700">{feature}</span>
                                                 </div>
                                             ))}
                                         </div>
 
-                                        {/* CTA Button */}
-                                        <Link to="/contact" className={`px-8 py-4 bg-gradient-to-r ${service.color} text-white font-bold rounded-full transition-all duration-300 shadow-lg hover:shadow-2xl hover:scale-105 inline-flex items-center gap-2`}>
-                                            <span>Contact Us</span>
-                                            <ArrowRight className="w-5 h-5" />
-                                        </Link>
-                                    </div>
-                                </div>
-                            </AnimatedSection>
-                        ))}
-                    </div>
-                </div>
-            </section>
+                                    </InViewSection>
+                                );
+                            })}
 
-            {/* CTA Section - Premium Card Design */}
-            <section className="py-24 md:py-32 bg-gradient-to-br from-slate-50 via-white to-slate-100 relative overflow-hidden">
-                {/* Decorative Background Elements */}
-                <div className="absolute inset-0 opacity-5">
-                    <div className="absolute top-20 left-10 w-72 h-72 bg-[#fae606] rounded-full blur-3xl"></div>
-                    <div className="absolute bottom-20 right-10 w-96 h-96 bg-slate-900 rounded-full blur-3xl"></div>
-                </div>
-
-                <div className="container mx-auto px-6 md:px-12 lg:px-20 max-w-[1440px] relative z-10">
-                    {/* Main Card */}
-                    <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200/50">
-                        {/* Decorative Top Border */}
-                        <div className="h-2 bg-gradient-to-r from-[#fae606] via-[#e6d500] to-[#fae606]"></div>
-
-                        <div className="grid lg:grid-cols-2 gap-0">
-                            {/* Left Column - Content */}
-                            <div className="px-6 py-12 md:p-16 lg:p-20 flex flex-col justify-center">
-                                {/* Ornamental Header */}
-                                <div className="flex items-center gap-3 mb-6">
-                                    <div className="w-12 h-[2px] bg-gradient-to-r from-[#fae606] to-transparent"></div>
-                                    <Star className="w-5 h-5 text-[#fae606] fill-[#fae606]" />
-                                    <Star className="w-4 h-4 text-[#fae606] fill-[#fae606] opacity-60" />
-                                </div>
-
-                                <h3 className="text-3xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-6 font-['Playfair_Display'] leading-tight">
-                                    Ready to Transform <br className="hidden sm:block" />
-                                    <span className="text-[#fae606] italic">Your Space?</span>
-                                </h3>
-
-                                <p className="text-slate-600 text-lg mb-8 leading-relaxed">
-                                    Partner with us to bring your architectural vision to life with premium natural stones.
-                                    Our expert team delivers excellence in every project.
-                                </p>
-
-                                {/* Statistics */}
-                                <div className="grid grid-cols-3 gap-4 sm:gap-6 mb-10 pb-10 border-b border-slate-200">
-                                    <div className="text-center">
-                                        <div className="text-2xl md:text-4xl font-bold text-slate-900 mb-1">500+</div>
-                                        <div className="text-sm text-slate-500 uppercase tracking-wider">Projects</div>
-                                    </div>
-                                    <div className="text-center border-x border-slate-200">
-                                        <div className="text-2xl md:text-4xl font-bold text-slate-900 mb-1">15+</div>
-                                        <div className="text-sm text-slate-500 uppercase tracking-wider">Countries</div>
-                                    </div>
-                                    <div className="text-center">
-                                        <div className="text-2xl md:text-4xl font-bold text-slate-900 mb-1">25+</div>
-                                        <div className="text-sm text-slate-500 uppercase tracking-wider">Years</div>
-                                    </div>
-                                </div>
-
-                                {/* CTA Buttons */}
-                                <div className="flex flex-col sm:flex-row gap-4">
-                                    <Link to="/contact" className="group px-8 py-4 bg-[#fae606] hover:bg-[#e6d500] text-slate-900 font-bold rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 inline-flex items-center justify-center gap-2">
-                                        <span>Contact Us</span>
-                                        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                                    </Link>
-                                    <button className="px-8 py-4 bg-transparent border-2 border-slate-300 hover:border-slate-900 text-slate-900 font-bold rounded-full transition-all duration-300 hover:bg-slate-50">
-                                        View Portfolio
-                                    </button>
-                                </div>
-                            </div>
-
-                            {/* Right Column - Contact Cards */}
-                            <div className="bg-gradient-to-br from-slate-900 to-slate-800 px-6 py-12 md:p-16 lg:p-20 flex flex-col justify-center relative overflow-hidden">
-                                {/* Decorative Pattern */}
-                                <div className="absolute inset-0 opacity-5">
-                                    <div className="absolute inset-0" style={{
-                                        backgroundImage: `radial-gradient(circle at 2px 2px, white 1px, transparent 0)`,
-                                        backgroundSize: '40px 40px'
-                                    }}></div>
-                                </div>
-
-                                <div className="relative z-10">
-                                    <div className="mb-8">
-                                        <div className="inline-block px-4 py-2 bg-[#fae606]/20 border border-[#fae606]/30 rounded-full mb-6">
-                                            <span className="text-[#fae606] text-sm font-semibold uppercase tracking-wider">Get in Touch</span>
-                                        </div>
-                                        <h4 className="text-2xl md:text-3xl font-bold text-white mb-3 font-['Playfair_Display']">
-                                            Let's Discuss Your Project
-                                        </h4>
-                                        <p className="text-white/60">
-                                            Our team is ready to help you create something extraordinary.
-                                        </p>
-                                    </div>
-
-                                    {/* Contact Cards */}
-                                    <div className="space-y-4">
-                                        {/* Email Card */}
-                                        <div className="group bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 hover:border-[#fae606]/50 transition-all duration-300 cursor-pointer">
-                                            <div className="flex items-start gap-4">
-                                                <div className="w-12 h-12 bg-[#fae606]/20 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-[#fae606]/30 transition-colors">
-                                                    <CheckCircle2 className="w-6 h-6 text-[#fae606]" />
-                                                </div>
-                                                <div className="flex-1">
-                                                    <div className="text-white/50 text-sm mb-1">Email Us</div>
-                                                    <div className="text-white font-semibold">aarohiexports@gmail.com</div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        {/* Phone Card */}
-                                        <div className="group bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 hover:border-[#fae606]/50 transition-all duration-300 cursor-pointer">
-                                            <div className="flex items-start gap-4">
-                                                <div className="w-12 h-12 bg-[#fae606]/20 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-[#fae606]/30 transition-colors">
-                                                    <CheckCircle2 className="w-6 h-6 text-[#fae606]" />
-                                                </div>
-                                                <div className="flex-1">
-                                                    <div className="text-white/50 text-sm mb-1">Call Us</div>
-                                                    <div className="text-white font-semibold">+91 98435 64268</div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        {/* Location Card */}
-                                        <div className="group bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 hover:border-[#fae606]/50 transition-all duration-300 cursor-pointer">
-                                            <div className="flex items-start gap-4">
-                                                <div className="w-12 h-12 bg-[#fae606]/20 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-[#fae606]/30 transition-colors">
-                                                    <CheckCircle2 className="w-6 h-6 text-[#fae606]" />
-                                                </div>
-                                                <div className="flex-1">
-                                                    <div className="text-white/50 text-sm mb-1">Visit Us</div>
-                                                    <div className="text-white font-semibold">Madurai, India</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            {/* Conclusion / CTA Block within scroll */}
+                            <div className="py-24 md:py-32 px-6 md:px-20 bg-zinc-900 text-white">
+                                <h3 className="text-3xl md:text-4xl font-['Playfair_Display'] mb-6">Unrivaled Expertise.</h3>
+                                <p className="text-zinc-400 mb-10 max-w-md text-sm md:text-base">Our commitment to quality is not just a promise, it's a rigorously executed protocol.</p>
+                                <Link to="/contact" className="inline-block border-b border-[#fae606] text-[#fae606] pb-1 uppercase tracking-widest hover:text-white hover:border-white transition-all text-sm md:text-base">
+                                    Start a Conversation
+                                </Link>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </section>

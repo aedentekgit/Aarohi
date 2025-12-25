@@ -1,20 +1,32 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import darkMarbleBg from '../images/dark_marble_bg.png';
-import p1 from '../images/about.jpg';
-import p2 from '../images/about2.jpg';
-import p3 from '../images/h1-wedo03.png';
 
 const Collections = () => {
-    const collections = [
-        { name: "Travertine", img: p1 },
-        { name: "Dione Nuvolato", img: p2 },
-        { name: "Granite", img: p3 },
-        { name: "Dione White", img: p1 },
-        { name: "Limestone", img: p2 },
-        { name: "Marble Aretusa", img: p3 },
-        { name: "Quartz", img: p1 },
-        { name: "Dione Spider", img: p2 },
-    ];
+    const [products, setProducts] = useState([]);
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                // Fetch products (limit to reasonable amount for performance if needed, or get all)
+                const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/products?limit=20`);
+                const json = await response.json();
+                const data = json.data || (Array.isArray(json) ? json : []);
+                setProducts(data);
+            } catch (error) {
+                console.error("Failed to fetch products:", error);
+            }
+        };
+
+        fetchProducts();
+    }, []);
+
+    // Helper to get image URL safely
+    const getImageUrl = (url) => {
+        if (!url) return '';
+        if (url.startsWith('http')) return url;
+        return `${import.meta.env.VITE_API_BASE_URL}${url}`;
+    };
 
     return (
         <section id="collections" className="py-16 md:py-32 relative overflow-hidden">
@@ -26,7 +38,7 @@ const Collections = () => {
 
             <div className="container mx-auto px-6 md:px-12 lg:px-20 max-w-[1440px] relative z-10">
                 {/* Top Section: Circular Button & Title */}
-                <div className="flex flex-col lg:flex-row items-center mb-12 md:mb-24 gap-8 md:gap-12 lg:gap-32">
+                <div className="flex flex-col lg:flex-row items-center mb-4 md:mb-8 gap-8 md:gap-12 lg:gap-32">
 
                     {/* Circular Spinner Button - Scaled down for mobile */}
                     <div className="relative w-28 h-28 sm:w-32 sm:h-32 md:w-48 md:h-48 shrink-0 flex items-center justify-center group cursor-default bg-white rounded-full transition-transform duration-500 shadow-[0_0_40px_rgba(255,255,255,0.1)] mb-0 lg:mb-0">
@@ -58,28 +70,41 @@ const Collections = () => {
                         <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-[50px] font-bold text-white font-urbanist leading-[1.3] md:leading-[1.2] lg:leading-[1.05] tracking-tight">
                             Geological Masterpieces: <br className="hidden sm:block" /> <span className="text-zinc-400">Timeless Elegance & Natural Beauty</span>
                         </h2>
+
+                        <Link
+                            to="/products"
+                            className="inline-block mt-4 md:mt-8 px-8 py-4 border border-zinc-600 text-white uppercase tracking-[0.2em] text-xs font-bold hover:bg-[#fae606] hover:border-[#fae606] hover:text-black transition-all duration-300"
+                        >
+                            View All Products
+                        </Link>
                     </div>
                 </div>
             </div>
 
             {/* Bottom Section: Auto-Scrolling Carousel with Gaps */}
-            <div className="border-t border-zinc-800/50 pt-12 md:pt-16 w-full px-0 overflow-hidden group">
+            <div className="border-t border-zinc-800/50 pt-4 md:pt-6 w-full px-0 overflow-hidden group">
                 <div className="flex w-max animate-marquee gap-6">
                     {/* Multi-duplication for smooth infinite scroll */}
-                    {[...collections, ...collections, ...collections, ...collections].map((item, index) => (
-                        <div key={index} className="group cursor-pointer w-[160px] md:w-[220px] shrink-0">
-                            <div className="aspect-square bg-zinc-900 border-[6px] md:border-[8px] border-white/90 overflow-hidden relative shadow-xl">
-                                <img
-                                    src={item.img}
-                                    alt={item.name}
-                                    className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-1000"
-                                />
+                    {products.length > 0 ? (
+                        [...products, ...products, ...products, ...products].map((item, index) => (
+                            <div key={index} className="group cursor-pointer w-[160px] md:w-[220px] shrink-0">
+                                <div className="aspect-square bg-zinc-900 border-[6px] md:border-[8px] border-white/90 overflow-hidden relative shadow-xl">
+                                    <img
+                                        src={getImageUrl(item.image_url)}
+                                        alt={item.name}
+                                        className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-1000"
+                                    />
+                                </div>
+                                <div className="p-4 text-center">
+                                    <h3 className="text-white font-bold text-xs md:text-sm uppercase tracking-widest group-hover:text-[#fae606] transition-colors">
+                                        {item.name}
+                                    </h3>
+                                </div>
                             </div>
-                            <div className="p-4 text-center">
-                                <h3 className="text-white font-bold text-xs md:text-sm uppercase tracking-widest group-hover:text-[#fae606] transition-colors">{item.name}</h3>
-                            </div>
-                        </div>
-                    ))}
+                        ))
+                    ) : (
+                        <div className="text-white/50 px-12">Loading collection...</div>
+                    )}
                 </div>
             </div>
 
@@ -97,7 +122,7 @@ const Collections = () => {
                     100% { transform: translateX(0); } 
                 }
                 .animate-marquee {
-                    animation: scroll 60s linear infinite;
+                    animation: scroll 200s linear infinite;
                     will-change: transform;
                 }
                 .group:hover .animate-marquee {

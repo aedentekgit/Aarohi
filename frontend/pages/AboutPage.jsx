@@ -173,13 +173,21 @@ const AboutPage = () => {
                             Founded on the principles of geological purity and architectural precision, Aarohi Exports has defined the pinnacle of natural stone craftsmanship since inception.
                         </p>
 
-                        <div className={`flex items-center gap-6 mt-12 transition-all duration-1000 delay-[1100ms] ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
-                            <div className="w-20 h-20 rounded-full border border-[#fae606]/30 flex items-center justify-center backdrop-blur-md animate-pulse">
-                                <History className="text-[#fae606] w-8 h-8" />
-                            </div>
-                            <div>
-                                <p className="text-[#fae606] font-black text-2xl leading-none">2016</p>
-                                <p className="text-white/40 uppercase tracking-[0.2em] text-[10px] font-bold mt-1">Inception Year</p>
+                        <div className={`relative mt-16 inline-block transition-all duration-1000 delay-[1100ms] ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
+                            {/* Stylish Vertical Layout */}
+                            <div className="flex items-center gap-6">
+                                {/* Large Year */}
+                                <div className="relative">
+                                    <span className="text-7xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-br from-[#fae606] to-white/20 font-['Playfair_Display'] opacity-90">
+                                        2000
+                                    </span>
+                                    <div className="absolute -bottom-2 left-0 w-full h-[2px] bg-gradient-to-r from-[#fae606] to-transparent"></div>
+                                </div>
+
+                                <div className="flex flex-col justify-center h-full pt-4">
+                                    <span className="text-white font-bold text-lg tracking-wide">ESTABLISHED</span>
+                                    <span className="text-white/40 text-[10px] uppercase tracking-[0.3em] mt-1">Global Inception</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -230,7 +238,7 @@ const AboutPage = () => {
 
                             <h2 className="text-4xl md:text-6xl font-bold text-slate-900 mb-8 leading-tight font-['Playfair_Display']">
                                 Crafting Excellence <br />
-                                <span className="text-slate-500 italic">Since 2016</span>
+                                <span className="text-slate-500 italic">Since 2000</span>
                             </h2>
 
                             <div className="space-y-6 mb-10">
@@ -304,7 +312,7 @@ const AboutPage = () => {
             </AnimatedSection>
 
             {/* Awards and Recognition Section */}
-            <AnimatedSection className="py-24 md:py-32 bg-white">
+            <AnimatedSection className="pt-24 md:pt-32 pb-8 md:pb-12 bg-white">
                 <div className="container mx-auto px-6 md:px-12 lg:px-20 max-w-[1440px]">
                     <div className="flex flex-col lg:flex-row gap-16 lg:gap-20">
 
@@ -484,7 +492,7 @@ const AboutPage = () => {
             </AnimatedSection>
 
             {/* CTA Section */}
-            <AnimatedSection className="py-24 md:py-32 bg-white">
+            <AnimatedSection className="pt-8 md:pt-12 pb-24 md:pb-32 bg-white">
                 <div className="container mx-auto px-6 md:px-12 lg:px-20 max-w-[1440px]">
                     <div className="relative rounded-3xl overflow-hidden shadow-2xl">
                         <div className="absolute inset-0">

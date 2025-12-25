@@ -111,7 +111,7 @@ const Features = () => {
                     100% { transform: translateX(-50%); }
                 }
                 .animate-marquee-slow {
-                    animation: marquee-scroll 60s linear infinite;
+                    animation: marquee-scroll 92s linear infinite;
                 }
                 .group\/marquee:hover .animate-marquee-slow {
                     animation-play-state: paused;

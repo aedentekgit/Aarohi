@@ -91,32 +91,49 @@ const Home = () => {
       </div>
 
       {/* Navigation Controls - Left Bottom */}
-      <div className="absolute bottom-10 md:bottom-12 left-6 md:left-12 lg:left-20 z-30 flex items-center gap-4 md:gap-6 animate-reveal-left" style={{ animationDelay: '1.5s' }}>
-        <button
-          onClick={() => setCurrentIndex((prev) => (prev + 1) % slides.length)}
-          className="group relative w-14 h-14 md:w-20 md:h-20 rounded-full border border-white/20 flex items-center justify-center overflow-hidden transition-all duration-500 hover:border-[#fae606] backdrop-blur-sm shadow-2xl"
-        >
-          <div className="absolute inset-0 bg-[#fae606] translate-y-full group-hover:translate-y-0 transition-transform duration-700 cubic-bezier(0.16, 1, 0.3, 1)"></div>
-          <svg
-            className="relative z-10 text-white group-hover:text-black transition-colors duration-500 w-6 h-6 md:w-7 md:h-7"
-            viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
+      <div className="absolute bottom-10 md:bottom-12 left-6 md:left-12 lg:left-20 z-30 flex items-center gap-6 animate-reveal-left" style={{ animationDelay: '1.5s' }}>
+        {/* Unified Navigation Pill */}
+        <div className="flex items-center bg-white/5 backdrop-blur-md rounded-full border border-white/10 p-1">
+          <button
+            onClick={() => setCurrentIndex((prev) => (prev - 1 + slides.length) % slides.length)}
+            className="w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center hover:bg-[#fae606] hover:text-black text-white transition-all duration-300 group"
           >
-            <path d="M5 12h14M12 5l7 7-7 7" />
-          </svg>
-        </button>
+            <svg
+              className="w-5 h-5 md:w-6 md:h-6 transform group-hover:-translate-x-1 transition-transform"
+              viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
+            >
+              <path d="M19 12H5M12 19l-7-7 7-7" />
+            </svg>
+          </button>
 
-        <div className="cursor-default select-none">
-          <div className="flex items-center gap-2 md:gap-3 mb-1">
-            <span className="text-[#fae606] text-[10px] md:text-xs font-black tracking-tighter">0{currentIndex + 1}</span>
-            <div className="relative w-8 md:w-12 h-[1px] bg-white/10">
+          <div className="w-[1px] h-6 bg-white/10"></div>
+
+          <button
+            onClick={() => setCurrentIndex((prev) => (prev + 1) % slides.length)}
+            className="w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center hover:bg-[#fae606] hover:text-black text-white transition-all duration-300 group"
+          >
+            <svg
+              className="w-5 h-5 md:w-6 md:h-6 transform group-hover:translate-x-1 transition-transform"
+              viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
+            >
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Counter Info */}
+        <div className="cursor-default select-none pl-2">
+          <div className="flex items-center gap-3 mb-1">
+            <span className="text-[#fae606] text-sm font-black tracking-tighter">0{currentIndex + 1}</span>
+            <div className="w-12 h-[2px] bg-white/10 relative overflow-hidden rounded-full">
               <div
-                className="absolute inset-y-0 left-0 bg-[#fae606] transition-all duration-1000"
+                className="absolute inset-y-0 left-0 bg-[#fae606] transition-all duration-1000 ease-out"
                 style={{ width: `${((currentIndex + 1) / slides.length) * 100}%` }}
               />
             </div>
-            <span className="text-white/30 text-[10px] md:text-xs font-black tracking-tighter">0{slides.length}</span>
+            <span className="text-white/30 text-sm font-black tracking-tighter">0{slides.length}</span>
           </div>
-          <p className="text-white font-bold text-[8px] md:text-[10px] uppercase tracking-[0.3em] opacity-80">Next Experience</p>
+          <p className="text-white font-bold text-[10px] uppercase tracking-[0.3em] opacity-80">Next Experience</p>
         </div>
       </div>
 

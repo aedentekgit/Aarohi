@@ -47,7 +47,7 @@ const Process = () => {
     ];
 
     return (
-        <section id="process" className="bg-[#0F0F0F] text-white py-20 pb-24 md:py-32 relative overflow-hidden">
+        <section id="process" className="bg-[#0F0F0F] text-white py-12 pb-12 md:py-20 relative overflow-hidden">
             {/* Ambient Background Elements */}
             <div className="absolute inset-0 opacity-[0.03] pointer-events-none"
                 style={{ backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)', backgroundSize: '60px 60px' }}>
@@ -55,7 +55,7 @@ const Process = () => {
 
             <div className="container mx-auto px-6 md:px-12 lg:px-20 max-w-[1440px] relative z-10">
                 {/* Side-by-Side Split Header Structure */}
-                <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-12 md:mb-16 pb-8 md:pb-12 border-b border-white/5 gap-8 md:gap-10">
+                <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-6 md:mb-8 pb-4 md:pb-6 border-b border-white/5 gap-8 md:gap-10">
                     <div className="flex-1 w-full">
                         <h2 className="text-4xl sm:text-5xl md:text-7xl font-black font-urbanist leading-[0.9] md:leading-[0.85] tracking-tighter">
                             Stone <br />
@@ -76,7 +76,7 @@ const Process = () => {
 
                 {/* Blueprint-style Grid Layout */}
                 <div className="relative overflow-hidden group/marquee">
-                    <div className="flex w-max animate-marquee-process gap-8 pb-12 pt-8">
+                    <div className="flex w-max animate-marquee-process gap-8 pb-6 pt-4">
                         {/* Multi-duplication for smooth infinite scroll */}
                         {[...steps, ...steps, ...steps, ...steps].map((step, index) => (
                             <div
@@ -132,7 +132,7 @@ const Process = () => {
                         100% { transform: translateX(-50%); }
                     }
                     .animate-marquee-process {
-                        animation: marquee-scroll-process 60s linear infinite;
+                        animation: marquee-scroll-process 90s linear infinite;
                     }
                     .group\\/marquee:hover .animate-marquee-process {
                         animation-play-state: paused;

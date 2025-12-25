@@ -100,7 +100,7 @@ const Products = () => {
                     100% { transform: translateX(0); }
                 }
                 .animate-products-marquee {
-                    animation: products-marquee-scroll 80s linear infinite;
+                    animation: products-marquee-scroll 53s linear infinite;
                 }
                 .group\/marquee:hover .animate-products-marquee {
                     animation-play-state: paused;
