@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BookOpen, X, Maximize2, Sparkles, ChevronLeft, ChevronRight, History } from 'lucide-react';
+import productsImg from '../images/products.jpg';
 
 
 const ProductsPage = () => {
@@ -14,6 +15,8 @@ const ProductsPage = () => {
     const [variantsLoading, setVariantsLoading] = useState(false);
     const [showImageModal, setShowImageModal] = useState(false);
     const [modalImage, setModalImage] = useState('');
+    const [modalImagesList, setModalImagesList] = useState([]);
+    const [modalTitlesList, setModalTitlesList] = useState([]);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [scrollY, setScrollY] = useState(0);
     const [isVisible, setIsVisible] = useState(false);
@@ -25,9 +28,22 @@ const ProductsPage = () => {
         fetchInitialData();
 
         const handleScroll = () => setScrollY(window.scrollY);
+        const handleKeyDown = (e) => {
+            if (showImageModal) {
+                if (e.key === 'ArrowRight') handleNextImage(e);
+                if (e.key === 'ArrowLeft') handlePrevImage(e);
+                if (e.key === 'Escape') setShowImageModal(false);
+            }
+        };
+
         window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
+        window.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [showImageModal, currentImageIndex, modalImagesList]);
 
     const fetchInitialData = async () => {
         try {
@@ -104,30 +120,30 @@ const ProductsPage = () => {
         }
     };
 
-    const openImageModal = (image, globalIndex) => {
-        setCurrentImageIndex(globalIndex);
+    const openImageModal = (image, index, list, titles) => {
+        setModalImagesList(list || []);
+        setModalTitlesList(titles || []);
+        setCurrentImageIndex(index);
         setModalImage(image);
         setShowImageModal(true);
     };
 
     const handleNextImage = (e) => {
         if (e) e.stopPropagation();
-        const allImages = variants.flatMap(v => v.images);
-        if (allImages.length === 0) return;
+        if (modalImagesList.length === 0) return;
 
-        const nextIndex = (currentImageIndex + 1) % allImages.length;
+        const nextIndex = (currentImageIndex + 1) % modalImagesList.length;
         setCurrentImageIndex(nextIndex);
-        setModalImage(allImages[nextIndex]);
+        setModalImage(modalImagesList[nextIndex]);
     };
 
     const handlePrevImage = (e) => {
         if (e) e.stopPropagation();
-        const allImages = variants.flatMap(v => v.images);
-        if (allImages.length === 0) return;
+        if (modalImagesList.length === 0) return;
 
-        const prevIndex = (currentImageIndex - 1 + allImages.length) % allImages.length;
+        const prevIndex = (currentImageIndex - 1 + modalImagesList.length) % modalImagesList.length;
         setCurrentImageIndex(prevIndex);
-        setModalImage(allImages[prevIndex]);
+        setModalImage(modalImagesList[prevIndex]);
     };
 
     const activeProductsForSelected = products
@@ -145,8 +161,8 @@ const ProductsPage = () => {
                     style={{ transform: `translateY(${scrollY * 0.5}px)` }}
                 >
                     <img
-                        src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&q=80&w=2000"
-                        alt="Products Banner"
+                        src={productsImg}
+                        alt="Granite and Marble Showroom"
                         className={`w-full h-full object-cover transition-transform duration-[5000ms] ease-out ${isVisible ? 'scale-100' : 'scale-125'}`}
                     />
                     <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-black/30"></div>
@@ -160,11 +176,11 @@ const ProductsPage = () => {
                         </div>
 
                         <h1 className="text-6xl md:text-9xl font-black text-white leading-[0.85] tracking-tighter mb-10 font-['Playfair_Display']">
-                            {['Our', 'Products', 'Material Library'].map((word, index) => (
+                            {['Curating', 'Exquisite Surfaces', 'The Architectural Material Library'].map((word, index) => (
                                 <span
                                     key={index}
                                     className={`block transition-all duration-[1200ms] delay-[${300 + index * 200}ms] ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
-                                        } ${index === 1 ? 'text-[#fae606] italic font-light' : index === 2 ? 'text-4xl md:text-6xl font-light text-white/80 mt-6' : ''}`}
+                                        } ${index === 1 ? 'text-[#fae606] italic font-light' : index === 2 ? 'text-2xl md:text-4xl font-light text-white/70 mt-4 tracking-widest uppercase' : ''}`}
                                 >
                                     {word}
                                 </span>
@@ -172,7 +188,7 @@ const ProductsPage = () => {
                         </h1>
 
                         <p className={`text-white/60 text-lg md:text-xl font-light leading-relaxed max-w-2xl transition-all duration-1000 delay-[900ms] ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
-                            Explore our premium collection of natural stone and marble products, meticulously sourced and crafted for architectural excellence.
+                            Immerse yourself in a meticulously cataloged collection of the world's most prestigious natural stones. Each selection is hand-picked to fulfill the exacting requirements of elite architectural design and structural integrity.
                         </p>
 
                         <div className={`relative mt-16 inline-block transition-all duration-1000 delay-[1100ms] ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
@@ -187,8 +203,8 @@ const ProductsPage = () => {
                                 </div>
 
                                 <div className="flex flex-col justify-center h-full pt-4">
-                                    <span className="text-white font-bold text-lg tracking-wide">Exquisite</span>
-                                    <span className="text-white/40 text-[10px] uppercase tracking-[0.3em] mt-1">Unique Varieties</span>
+                                    <span className="text-white font-bold text-lg tracking-wide uppercase">Globally Sourced</span>
+                                    <span className="text-white/40 text-[10px] uppercase tracking-[0.3em] mt-1">Unique Material Varieties</span>
                                 </div>
                             </div>
                         </div>
@@ -260,27 +276,30 @@ const ProductsPage = () => {
                                                         <div key={i} className="aspect-[4/5] bg-slate-50 rounded-[24px] animate-pulse" />
                                                     ))
                                                 ) : variants.length > 0 ? (
-                                                    variants.flatMap(v => v.images.map((image, index) => ({ image, index, variant: v }))).map((item, idx) => (
-                                                        <div key={`${item.variant.id}-${item.index}`} className="group">
-                                                            <div
-                                                                className="relative aspect-[4/5] bg-slate-100 rounded-[24px] overflow-hidden cursor-pointer shadow-sm hover:shadow-2xl transition-all duration-700 hover:-translate-y-2"
-                                                                onClick={() => openImageModal(item.image, idx)}
-                                                            >
-                                                                <img
-                                                                    src={`${import.meta.env.VITE_API_BASE_URL}${item.image}`}
-                                                                    alt={item.variant.name}
-                                                                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-                                                                />
-                                                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                                                                <div className="absolute inset-x-0 bottom-0 p-8 flex items-center justify-between pointer-events-none translate-y-8 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
-                                                                    <div className="w-12 h-12 bg-white/20 backdrop-blur-xl rounded-full flex items-center justify-center border border-white/30 transform transition-transform group-hover:scale-110">
-                                                                        <Maximize2 size={20} className="text-white" />
+                                                    (() => {
+                                                        const allImages = variants.flatMap(v => v.images);
+                                                        const allTitles = variants.flatMap(v => v.images.map(() => selectedProduct.name));
+                                                        return variants.flatMap(v => v.images.map((image, index) => ({ image, index, variant: v }))).map((item, idx) => (
+                                                            <div key={`${item.variant.id}-${item.index}`} className="group">
+                                                                <div
+                                                                    className="relative aspect-[4/5] bg-slate-100 rounded-[24px] overflow-hidden cursor-pointer shadow-sm hover:shadow-2xl transition-all duration-700 hover:-translate-y-2"
+                                                                    onClick={() => openImageModal(item.image, idx, allImages, allTitles)}
+                                                                >
+                                                                    <img
+                                                                        src={`${import.meta.env.VITE_API_BASE_URL}${item.image}`}
+                                                                        alt={item.variant.name}
+                                                                        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                                                                    />
+                                                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                                                                    <div className="absolute inset-x-0 bottom-0 p-8 flex items-center justify-between pointer-events-none translate-y-8 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
+                                                                        <div className="w-12 h-12 bg-white/20 backdrop-blur-xl rounded-full flex items-center justify-center border border-white/30 transform transition-transform group-hover:scale-110">
+                                                                            <Maximize2 size={20} className="text-white" />
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-
-                                                        </div>
-                                                    ))
+                                                        ));
+                                                    })()
                                                 ) : (
                                                     <div className="col-span-full py-40 bg-slate-50 rounded-[64px] border-2 border-dashed border-slate-200 flex flex-col items-center justify-center">
                                                         <Sparkles className="text-slate-200 mb-6" size={48} />
@@ -352,7 +371,12 @@ const ProductsPage = () => {
                     <button onClick={handleNextImage} className="fixed right-6 md:right-10 top-1/2 -translate-y-1/2 w-16 h-16 flex items-center justify-center hover:scale-110 transition-all"><ChevronRight size={48} className="text-slate-800" strokeWidth={1} /></button>
                     <div className="max-w-6xl w-full h-full flex flex-col items-center justify-center relative" onClick={(e) => e.stopPropagation()}>
                         <img src={`${import.meta.env.VITE_API_BASE_URL}${modalImage}`} alt="Specimen" className="max-w-full max-h-[75vh] object-contain shadow-2xl" />
-                        {selectedProduct && <div className="mt-12 text-center"><h1 className="text-slate-950 text-4xl md:text-6xl font-extralight tracking-tight italic font-serif">{selectedProduct.name}</h1><span className="text-slate-400 text-xs font-black uppercase tracking-[0.4em] mt-6">Product Gallery</span></div>}
+                        <div className="mt-12 text-center">
+                            <h1 className="text-slate-950 text-4xl md:text-6xl font-extralight tracking-tight italic font-serif">
+                                {modalTitlesList[currentImageIndex] || "Product Specimen"}
+                            </h1>
+                            <span className="text-slate-400 text-xs font-black uppercase tracking-[0.4em] mt-6 block">Product Gallery</span>
+                        </div>
                     </div>
                 </div>
             )}
@@ -389,15 +413,18 @@ const ProductsPage = () => {
 
                     {/* Products Grid */}
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
-                        {(collectionsFilterId === '' ? products : products.filter(p => p.collection_id === parseInt(collectionsFilterId)))
-                            .map((product) => (
+                        {(() => {
+                            const filtered = (collectionsFilterId === '' ? products : products.filter(p => p.collection_id === parseInt(collectionsFilterId)));
+                            const list = filtered.filter(p => p.image_url).map(p => p.image_url);
+                            const titles = filtered.filter(p => p.image_url).map(p => p.name);
+                            return filtered.map((product) => (
                                 <div
                                     key={product.id}
                                     className="group cursor-pointer"
                                     onClick={() => {
                                         if (product.image_url) {
-                                            setModalImage(product.image_url);
-                                            setShowImageModal(true);
+                                            const imgIdx = list.indexOf(product.image_url);
+                                            openImageModal(product.image_url, imgIdx !== -1 ? imgIdx : 0, list, titles);
                                         }
                                     }}
                                 >
@@ -426,7 +453,8 @@ const ProductsPage = () => {
                                         </h3>
                                     </div>
                                 </div>
-                            ))}
+                            ));
+                        })()}
                     </div>
 
                     {/* Empty State */}

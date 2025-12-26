@@ -179,7 +179,7 @@ const AdminCollections = () => {
                 </header>
 
                 {/* Main Content */}
-                <main className="flex-1 overflow-y-auto p-6 lg:p-10">
+                <main className="flex-1 overflow-y-auto p-6 lg:p-10" data-lenis-prevent>
                     <div className="max-w-7xl mx-auto">
                         {/* Stats Cards */}
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">

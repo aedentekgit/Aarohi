@@ -1,10 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Target, Trophy, Users, Globe2, ArrowRight, History, Award, CheckCircle2, Shield, Sparkles } from 'lucide-react';
-import about from '../images/about.png';
+import about from '../images/about.jpeg';
+import ceo from '../images/ceo.jpeg';
+import iso from '../images/iso.jpeg';
+import awardImg from '../images/Award.jpeg';
 
 const aboutBanner = "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=2000";
-const storyImg = "https://images.unsplash.com/photo-1517581177682-a085bb7ffb15?auto=format&fit=crop&q=80&w=1200";
+const storyImg = ceo;
 
 // Animated Section Component with Intersection Observer
 const AnimatedSection = ({ children, className = "", delay = 0 }) => {
@@ -88,11 +91,11 @@ const AboutPage = () => {
             icon: Users,
             count: 450,
             suffix: "+",
-            label: "Satisfied Clients",
-            detail: "Building long-lasting relationships through dependable service and superior product quality."
+            label: "Happy Clients",
+            detail: "Building lasting relationships through trust, quality products, and exceptional service."
         },
         {
-            icon: Trophy,
+            icon: History,
             count: 1200,
             suffix: "+",
             label: "Global Projects",
@@ -102,15 +105,15 @@ const AboutPage = () => {
             icon: Globe2,
             count: 18,
             suffix: "+",
-            label: "Countries",
-            detail: "A strong international network that reflects our global credibility and reach."
+            label: "Countries Served",
+            detail: "Managing a robust export network across USA, UK, Canada, UAE, Europe, and Asia."
         },
         {
             icon: Award,
             count: 75,
             suffix: "+",
-            label: "Professionals",
-            detail: "A dedicated team of experts ensuring precision, innovation, and excellence at every stage."
+            label: "Skilled Professionals",
+            detail: "A dedicated team of experts ensuring precision and excellence at every stage of production."
         }
     ];
 
@@ -158,11 +161,11 @@ const AboutPage = () => {
                         </div>
 
                         <h1 className="text-6xl md:text-9xl font-black text-white leading-[0.85] tracking-tighter mb-10 font-['Playfair_Display']">
-                            {['Establishing', 'Excellence', 'Our Eternal Legacy'].map((word, index) => (
+                            {['Pioneering', 'Global Quality', 'A Legacy of Architectural Distinction'].map((word, index) => (
                                 <span
                                     key={index}
                                     className={`block transition-all duration-[1200ms] delay-[${300 + index * 200}ms] ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
-                                        } ${index === 1 ? 'text-[#fae606] italic font-light' : index === 2 ? 'text-4xl md:text-6xl font-light text-white/80 mt-6' : ''}`}
+                                        } ${index === 1 ? 'text-[#fae606] italic font-light' : index === 2 ? 'text-2xl md:text-4xl font-light text-white/70 mt-4 tracking-widest uppercase' : ''}`}
                                 >
                                     {word}
                                 </span>
@@ -170,7 +173,7 @@ const AboutPage = () => {
                         </h1>
 
                         <p className={`text-white/60 text-lg md:text-xl font-light leading-relaxed max-w-2xl transition-all duration-1000 delay-[900ms] ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
-                            Founded on the principles of geological purity and architectural precision, Aarohi Exports has defined the pinnacle of natural stone craftsmanship since inception.
+                            At the intersection of geological expertise and architectural vision, Aarohi stands as a premier global exporter, curating India's finest natural stones to redefine international infrastructure standards.
                         </p>
 
                         <div className={`relative mt-16 inline-block transition-all duration-1000 delay-[1100ms] ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
@@ -179,7 +182,7 @@ const AboutPage = () => {
                                 {/* Large Year */}
                                 <div className="relative">
                                     <span className="text-7xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-br from-[#fae606] to-white/20 font-['Playfair_Display'] opacity-90">
-                                        2000
+                                        2016
                                     </span>
                                     <div className="absolute -bottom-2 left-0 w-full h-[2px] bg-gradient-to-r from-[#fae606] to-transparent"></div>
                                 </div>
@@ -237,16 +240,19 @@ const AboutPage = () => {
                             </div>
 
                             <h2 className="text-4xl md:text-6xl font-bold text-slate-900 mb-8 leading-tight font-['Playfair_Display']">
-                                Crafting Excellence <br />
-                                <span className="text-slate-500 italic">Since 2000</span>
+                                A Global Leader <br />
+                                <span className="text-slate-500 italic">Since 2016</span>
                             </h2>
 
                             <div className="space-y-6 mb-10">
                                 <p className="text-slate-600 text-lg leading-relaxed">
-                                    Aarohi Exports was born from a vision to redefine the natural stone industry. What started as a small venture has grown into a global enterprise, serving clients across continents with premium granite, marble, and natural stones.
+                                    Aarohi is a leading natural stone and granite exports company that has been at the forefront of the global construction and infrastructure development sector for nearly a decade. With a customer base spanning across continents, we have established a reputation for delivering high-quality products, innovative solutions, and excellent customer service.
                                 </p>
                                 <p className="text-slate-600 text-lg leading-relaxed">
-                                    Our commitment to quality, innovation, and customer satisfaction has made us a trusted name in the industry. Every project we undertake is a testament to our dedication to excellence.
+                                    Established in 2016, Aarohi started as a small venture by a team of experienced professionals with a vision to provide sustainable and eco-friendly natural stone and granite solutions. Over the years, the company has grown rapidly, both in terms of its customer base and product range.
+                                </p>
+                                <p className="text-slate-600 text-lg leading-relaxed">
+                                    Today, Aarohi operates from multiple locations across India and has a strong global presence with customers in countries such as the <span className="text-slate-900 font-bold">USA, Vietnam, Indonesia, Egypt, Oman, Thailand, Canada, the UK, the UAE,</span> and several <span className="text-slate-900 font-bold">European nations.</span>
                                 </p>
                             </div>
 
@@ -311,162 +317,116 @@ const AboutPage = () => {
                 </div>
             </AnimatedSection>
 
-            {/* Awards and Recognition Section */}
-            <AnimatedSection className="pt-24 md:pt-32 pb-8 md:pb-12 bg-white">
-                <div className="container mx-auto px-6 md:px-12 lg:px-20 max-w-[1440px]">
-                    <div className="flex flex-col lg:flex-row gap-16 lg:gap-20">
+            {/* Awards and Recognition Section - Redesigned UI */}
+            <AnimatedSection className="py-32 bg-[#FAF9F6] relative overflow-hidden">
+                {/* Background decorative elements */}
+                <div className="absolute top-0 right-0 w-1/3 h-full bg-[#fae606]/5 -skew-x-12 transform origin-top-right pointer-events-none"></div>
+                <div className="absolute bottom-0 left-0 w-64 h-64 border border-[#fae606]/10 rounded-full -translate-x-1/2 translate-y-1/2 pointer-events-none"></div>
 
-                        {/* Left Column: Image & Feature Text */}
-                        <div className="w-full lg:w-1/3">
-                            <div className="relative mb-10 overflow-hidden rounded-2xl shadow-xl group">
-                                <img
-                                    src="https://images.unsplash.com/photo-1621333100656-782163359740?auto=format&fit=crop&q=80&w=1200"
-                                    alt="Stone Collection"
-                                    className="w-full h-[400px] object-cover transition-transform duration-700 group-hover:scale-105"
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                <div className="container mx-auto px-6 md:px-12 lg:px-20 max-w-[1440px] relative z-10">
+                    <div className="flex flex-col lg:flex-row items-center gap-20">
+
+                        {/* Left Side: Editorial Content */}
+                        <div className="w-full lg:w-1/2">
+                            <div className="inline-flex items-center gap-3 px-4 py-2 bg-white rounded-full shadow-sm border border-slate-100 mb-8">
+                                <Trophy className="w-4 h-4 text-[#fae606]" />
+                                <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-500">Excellence in Design</span>
                             </div>
 
-                            <h3 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6 font-['Playfair_Display'] leading-tight">
-                                Enhance Your Space With <br /> Timeless Elegance!
-                            </h3>
-                            <p className="text-slate-600 text-base leading-relaxed">
-                                We offer quality stone products in the form of tiles and slabs selected from all over the world to enhance your home project.
-                            </p>
-                        </div>
-
-                        {/* Right Column: Awards Content */}
-                        <div className="w-full lg:w-2/3 relative">
-                            {/* Section Header */}
-                            <div className="flex items-center gap-3 mb-6">
-                                <div className="w-2 h-2 bg-[#fae606]"></div>
-                                <span className="text-slate-500 font-semibold tracking-[0.2em] text-[10px] uppercase">Awards and Recognition</span>
-                            </div>
-
-                            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-12 font-['Playfair_Display'] leading-tight">
-                                Design That Speaks Our <br /> Industry Awards
+                            <h2 className="text-5xl md:text-7xl font-bold text-slate-900 mb-8 font-['Playfair_Display'] leading-[1.1]">
+                                A Legacy of <br />
+                                <span className="italic font-light text-[#fae606]">Excellence</span> & <br />
+                                Innovation
                             </h2>
 
-                            {/* Awards List */}
-                            <div className="relative">
-                                <div className="space-y-0">
-                                    {[
-                                        { category: "Designs of the Year", title: "Best New Building in Germany", year: "2021" },
-                                        { category: "Architecture Awards", title: "Best Architectural Firm", year: "2022" },
-                                        { category: "Green Architecture Awards", title: "Excellence in Sustainability", year: "2023" },
-                                        { category: "Environment Lighting Award", title: "Community Impact Award", year: "2024" },
-                                        { category: "Urban Renewal Award", title: "Grand Award winner", year: "2025" }
-                                    ].map((award, i) => (
-                                        <div
-                                            key={i}
-                                            className="relative flex items-center justify-between py-6 px-6 md:px-8 transition-all duration-300 group bg-white hover:bg-[#F5F1ED]"
-                                        >
-                                            <div className="flex-1 pr-4">
-                                                <span className="text-slate-400 text-sm font-medium">{award.category}</span>
-                                            </div>
-                                            <div className="flex-1 px-4">
-                                                <h4 className="text-lg md:text-xl font-bold text-slate-900">{award.title}</h4>
-                                            </div>
-                                            <div className="flex-shrink-0 pl-4">
-                                                <span className="text-slate-400 text-sm font-semibold">{award.year}</span>
-                                            </div>
+                            <p className="text-lg text-slate-600 leading-relaxed mb-12 max-w-xl">
+                                Our commitment to architectural integrity and material perfection has been recognized globally. Each award represents our dedication to transforming spaces into timeless masterpieces.
+                            </p>
 
-                                            {/* Award Winner Badge - Shows on Hover */}
-                                            <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-12 opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 pointer-events-none z-30">
-                                                <div className="bg-[#1a1a1a] p-6 rounded-xl shadow-2xl w-40 relative overflow-hidden">
-                                                    {/* Decorative circles */}
-                                                    <div className="absolute -top-3 -right-3 w-16 h-16 bg-white/5 rounded-full blur-xl"></div>
-                                                    <div className="absolute -bottom-3 -left-3 w-16 h-16 bg-[#fae606]/10 rounded-full blur-xl"></div>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                                <div className="p-8 bg-white rounded-2xl shadow-sm border border-slate-50">
+                                    <div className="text-[#fae606] font-bold text-sm uppercase tracking-widest mb-4">Architecture</div>
+                                    <h4 className="text-xl font-bold text-slate-900 mb-2">Design of the Year</h4>
+                                    <p className="text-sm text-slate-500">Recognizing our commitment to structural beauty and functional elegance.</p>
+                                </div>
+                                <div className="p-8 bg-white rounded-2xl shadow-sm border border-slate-50">
+                                    <div className="text-[#fae606] font-bold text-sm uppercase tracking-widest mb-4">Innovation</div>
+                                    <h4 className="text-xl font-bold text-slate-900 mb-2">Industry Leader</h4>
+                                    <p className="text-sm text-slate-500">Honored for pioneering new techniques in stone processing and application.</p>
+                                </div>
+                            </div>
+                        </div>
 
-                                                    <div className="relative z-10 text-center flex flex-col items-center">
-                                                        {/* Laurel Wreath Circle */}
-                                                        <div className="w-20 h-20 border-2 border-dashed border-white/20 rounded-full flex items-center justify-center p-2 mb-3 animate-spin-slow">
-                                                            <div className="w-full h-full border-2 border-[#fae606] rounded-full flex items-center justify-center relative">
-                                                                {/* Laurel leaves - simplified */}
-                                                                <svg className="absolute inset-0 w-full h-full text-white/40" viewBox="0 0 100 100" fill="currentColor">
-                                                                    {/* Left laurel */}
-                                                                    <path d="M30,50 Q25,40 20,35 Q25,45 30,50 Q25,55 20,65 Q25,60 30,50" />
-                                                                    {/* Right laurel */}
-                                                                    <path d="M70,50 Q75,40 80,35 Q75,45 70,50 Q75,55 80,65 Q75,60 70,50" />
-                                                                </svg>
-                                                                {/* Trophy/Award icon in center */}
-                                                                <Award className="text-[#fae606] w-6 h-6 relative z-10" />
-                                                            </div>
-                                                        </div>
+                        {/* Right Side: Featured Award Card */}
+                        <div className="w-full lg:w-1/2">
+                            <div className="relative group">
+                                {/* Decorative gold frame effect */}
+                                <div className="absolute -inset-4 border border-[#fae606]/30 rounded-[2rem] pointer-events-none group-hover:scale-105 transition-transform duration-700"></div>
 
-                                                        {/* Text */}
-                                                        <span className="text-[9px] text-white/40 font-bold uppercase tracking-[0.3em] mb-1">Honored</span>
-                                                        <h5 className="text-white font-black text-lg italic leading-tight">
-                                                            AWARD<br />WINNER
-                                                        </h5>
-                                                    </div>
-                                                </div>
+                                <div className="relative bg-white rounded-[1.5rem] overflow-hidden shadow-2xl transition-all duration-700 hover:-translate-y-2">
+                                    {/* Main Certificate Mockup */}
+                                    <div className="relative h-[500px] overflow-hidden">
+                                        <img
+                                            src={iso}
+                                            alt="Award Certificate"
+                                            className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+
+                                        {/* Floating Badge */}
+                                        <div className="absolute top-8 right-8 w-24 h-24 bg-[#fae606] rounded-full flex flex-col items-center justify-center shadow-xl rotate-12 group-hover:rotate-0 transition-transform duration-500 border-4 border-white/20">
+                                            <span className="text-[10px] font-black text-black tracking-tighter uppercase">Year</span>
+                                            <span className="text-2xl font-black text-black">2021</span>
+                                        </div>
+
+                                        {/* Award Text Overlay */}
+                                        <div className="absolute bottom-0 left-0 w-full p-10 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                                            <div className="flex items-center gap-4 mb-3">
+                                                <div className="w-10 h-[1px] bg-[#fae606]"></div>
+                                                <span className="text-[#fae606] font-bold text-xs uppercase tracking-[0.4em]">Outstanding Export</span>
+                                            </div>
+                                            <h3 className="text-3xl md:text-4xl font-bold text-white mb-2 leading-tight">
+                                                CAPEXIL Excellence <br /> Award
+                                            </h3>
+                                        </div>
+                                    </div>
+
+                                    {/* Card Footer Details */}
+                                    <div className="p-8 flex items-center justify-between bg-white border-t border-slate-50">
+                                        <div className="flex items-center gap-6">
+                                            <div className="flex flex-col">
+                                                <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1">Status</span>
+                                                <span className="text-sm font-bold text-slate-900 flex items-center gap-2">
+                                                    <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                                                    Certified Winner
+                                                </span>
+                                            </div>
+                                            <div className="w-[1px] h-10 bg-slate-100"></div>
+                                            <div className="flex flex-col">
+                                                <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1">Location</span>
+                                                <span className="text-sm font-bold text-slate-900">New Delhi, India</span>
                                             </div>
                                         </div>
-                                    ))}
+                                        <div className="w-12 h-12 rounded-xl bg-slate-50 flex items-center justify-center group-hover:bg-[#fae606] transition-colors duration-500">
+                                            <Sparkles className="w-6 h-6 text-slate-300 group-hover:text-black transition-colors" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Floating Experience Badge overlapping the card */}
+                                <div className="absolute -left-6 bottom-20 hidden xl:flex flex-col items-center justify-center w-32 h-32 bg-slate-900 text-white rounded-2xl shadow-2xl rotate-[-8deg] border-4 border-white z-20">
+                                    <span className="text-3xl font-black text-[#fae606]">9+</span>
+                                    <span className="text-[8px] font-bold uppercase tracking-widest text-center mt-1">Years of <br /> Prestige</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </AnimatedSection>
 
-                {/* Modal for Award Image */}
-                {showModal && selectedAward && (
-                    <div
-                        className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4 md:p-8 animate-fadeIn"
-                        onClick={() => setShowModal(false)}
-                    >
-                        <div
-                            className="relative max-w-4xl w-full bg-white rounded-2xl overflow-hidden shadow-2xl animate-scaleIn"
-                            onClick={(e) => e.stopPropagation()}
-                        >
-                            {/* Close Button */}
-                            <button
-                                onClick={() => setShowModal(false)}
-                                className="absolute top-4 right-4 z-10 w-10 h-10 bg-black/50 hover:bg-black/70 text-white rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110"
-                            >
-                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                            </button>
 
-                            {/* Award Image */}
-                            <div className="relative">
-                                <img
-                                    src={selectedAward.image}
-                                    alt={selectedAward.title}
-                                    className="w-full h-auto max-h-[70vh] object-contain bg-slate-100"
-                                />
 
-                                {/* Award Badge Overlay on Image */}
-                                <div className="absolute top-8 right-8 bg-[#1a1a1a] p-6 rounded-xl shadow-2xl">
-                                    <div className="text-center flex flex-col items-center">
-                                        <div className="w-16 h-16 border-2 border-[#fae606] rounded-full flex items-center justify-center mb-3">
-                                            <Trophy className="text-[#fae606] w-8 h-8" />
-                                        </div>
-                                        <span className="text-[8px] text-white/40 font-bold uppercase tracking-[0.3em] mb-1">Award</span>
-                                        <h5 className="text-white font-black text-lg">{selectedAward.year}</h5>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Award Details */}
-                            <div className="p-8 bg-white border-t border-slate-100">
-                                <div className="flex items-start justify-between gap-4">
-                                    <div className="flex-1">
-                                        <span className="text-slate-400 text-sm font-medium mb-2 block">{selectedAward.category}</span>
-                                        <h3 className="text-3xl font-bold text-slate-900 mb-2">{selectedAward.title}</h3>
-                                    </div>
-                                    <div className="text-right">
-                                        <span className="text-[#fae606] text-4xl font-black">{selectedAward.year}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                )}
-
-                <style>{`
+            <style>{`
                     @keyframes spin-slow {
                         from { transform: rotate(0deg); }
                         to { transform: rotate(360deg); }
@@ -489,7 +449,6 @@ const AboutPage = () => {
                         animation: scaleIn 0.3s ease-out;
                     }
                 `}</style>
-            </AnimatedSection>
 
             {/* CTA Section */}
             <AnimatedSection className="pt-8 md:pt-12 pb-24 md:pb-32 bg-white">
@@ -521,7 +480,7 @@ const AboutPage = () => {
                 </div>
             </AnimatedSection>
 
-        </div>
+        </div >
     );
 };
 

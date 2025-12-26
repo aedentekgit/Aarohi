@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ShieldCheck, Layers, Ruler, Truck, CheckCircle2, ArrowRight, Sparkles, Star } from 'lucide-react';
-
-
-// Granite Showroom Background Image
-const bannerImg = "https://images.unsplash.com/photo-1615873968403-89e068629265?auto=format&fit=crop&q=80&w=2000";
+import servicesImg from '../images/services.jpeg';
+import stoneSourcingImg from '../images/Stone-Sourcing.JPG';
+import precisionFabricationImg from '../images/Precision-Fabrication.jpg';
+import globalLogisticsImg from '../images/Global-Logistics.jpg';
+import qualityAssuranceImg from '../images/Quality-Assurance.jpg';
 
 // Animated Section with Fade & Slide
 const AnimatedSection = ({ children, className = "", delay = 0, direction = "up" }) => {
@@ -91,7 +92,7 @@ const ServicesPage = () => {
             subtitle: "The Gold Standard",
             description: "Every stone undergoes strict 10-point inspection for structural integrity, polish consistency, and aesthetic perfection before it leaves our facility.",
             icon: ShieldCheck,
-            image: "https://images.unsplash.com/photo-1628163486121-72991870df22?auto=format&fit=crop&q=80&w=1200",
+            image: qualityAssuranceImg,
             features: [
                 "10-Point Inspection Protocol",
                 "Laser-Guided Calibration",
@@ -106,7 +107,7 @@ const ServicesPage = () => {
             subtitle: "Global Excellence",
             description: "Direct partnerships with legendary quarries worldwide. We source rare and exotic natural stones, ensuring exclusive textures and unmatched durability.",
             icon: Layers,
-            image: "https://images.unsplash.com/photo-1517581177682-a085bb7ffb15?auto=format&fit=crop&q=80&w=1200",
+            image: stoneSourcingImg,
             features: [
                 "150+ Material Variations",
                 "Direct Quarry Access",
@@ -121,7 +122,7 @@ const ServicesPage = () => {
             subtitle: "Engineering Excellence",
             description: "Utilizing state-of-the-art CNC technology and master craftsmanship to transform raw slabs into architectural masterpieces with micron-level precision.",
             icon: Ruler,
-            image: "https://images.unsplash.com/photo-1590482422730-804192477321?auto=format&fit=crop&q=80&w=1200",
+            image: precisionFabricationImg,
             features: [
                 "CNC-Automated Cutting",
                 "Zero-Tolerance Joins",
@@ -136,7 +137,7 @@ const ServicesPage = () => {
             subtitle: "Worldwide Delivery",
             description: "Our white-glove logistics network handles everything from export documentation to secure crating, guaranteeing safe delivery to any project site globally.",
             icon: Truck,
-            image: "https://images.unsplash.com/photo-1566576721346-d4a3b4eaeb55?auto=format&fit=crop&q=80&w=1200",
+            image: globalLogisticsImg,
             features: [
                 "Secure Export Packaging",
                 "Full-Chain Documentation",
@@ -158,7 +159,7 @@ const ServicesPage = () => {
                     style={{ transform: `translateY(${scrollY * 0.5}px)` }}
                 >
                     <img
-                        src={bannerImg}
+                        src={servicesImg}
                         alt="Services - Premium Stone Solutions"
                         className={`w-full h-full object-cover transition-transform duration-[5000ms] ease-out ${heroVisible ? 'scale-100' : 'scale-125'}`}
                     />
@@ -262,7 +263,7 @@ const ServicesPage = () => {
                                             <img src={service.image} alt={service.title} className="w-full h-full object-cover" />
                                             <div className="absolute inset-0 bg-black/20"></div>
                                             <div className="absolute bottom-4 left-6">
-                                                <span className="text-white/80 text-xs font-bold uppercase tracking-widest block mb-1">Step {service.id}</span>
+                                                <span className="text-white/80 text-[10px] font-black uppercase tracking-[0.3em] block mb-1">Service {service.id}</span>
                                                 <span className="text-white text-xl font-['Playfair_Display'] font-italic">{service.subtitle}</span>
                                             </div>
                                         </div>
@@ -271,7 +272,7 @@ const ServicesPage = () => {
                                             <div className="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center text-[#0F0F0F]">
                                                 <service.icon size={24} strokeWidth={1.5} />
                                             </div>
-                                            <span className="text-zinc-400 font-bold uppercase tracking-[0.2em] text-sm">Step {service.id}</span>
+                                            <span className="text-zinc-400 font-black uppercase tracking-[0.3em] text-sm">Service {service.id}</span>
                                         </div>
 
                                         <h3 className="text-3xl md:text-5xl lg:text-6xl font-black text-[#0F0F0F] mb-6 md:mb-8 font-['Playfair_Display'] leading-[1.1] md:leading-[0.9]">

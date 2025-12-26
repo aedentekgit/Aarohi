@@ -1,8 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Camera, Image as ImageIcon, X, ChevronLeft, ChevronRight, Maximize2, Sparkles } from 'lucide-react';
-
-
-const galleryBanner = "https://images.unsplash.com/photo-1516834474-48c0abc2a902?auto=format&fit=crop&q=80&w=2000";
+import galleryImg from '../images/gallery.jpg';
 
 const GalleryPage = () => {
     const [images, setImages] = useState([]);
@@ -19,9 +17,22 @@ const GalleryPage = () => {
         fetchGallery();
 
         const handleScroll = () => setScrollY(window.scrollY);
+        const handleKeyDown = (e) => {
+            if (e.key === 'ArrowRight') nextImage(e);
+            if (e.key === 'ArrowLeft') prevImage(e);
+            if (e.key === 'Escape') closeModal();
+        };
+
         window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
+        if (selectedImage) {
+            window.addEventListener('keydown', handleKeyDown);
+        }
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [selectedImage, images.length, selectedIndex]); // Added dependencies to ensure handlers have fresh state
 
     const fetchGallery = async () => {
         try {
@@ -74,7 +85,7 @@ const GalleryPage = () => {
                     style={{ transform: `translateY(${scrollY * 0.5}px)` }}
                 >
                     <img
-                        src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=2000"
+                        src={galleryImg}
                         alt="Gallery Banner"
                         className={`w-full h-full object-cover transition-transform duration-[5000ms] ease-out ${isVisible ? 'scale-100' : 'scale-125'}`}
                     />
@@ -149,17 +160,17 @@ const GalleryPage = () => {
                             <p className="text-slate-500">We are currently updating our curated gallery with new masterpieces.</p>
                         </div>
                     ) : (
-                        <div className="columns-1 sm:columns-2 md:columns-3 xl:columns-4 gap-8 space-y-8">
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6">
                             {images.map((image, index) => (
                                 <div
                                     key={image.id}
-                                    className="relative group cursor-pointer overflow-hidden rounded-3xl break-inside-avoid shadow-sm hover:shadow-2xl transition-all duration-700 hover:-translate-y-2"
+                                    className="relative group cursor-pointer overflow-hidden rounded-3xl shadow-sm hover:shadow-2xl transition-all duration-700 hover:-translate-y-2 aspect-[4/5]"
                                     onClick={() => openModal(index)}
                                 >
                                     <img
                                         src={`${import.meta.env.VITE_API_BASE_URL}${image.image_url}`}
                                         alt={`Gallery Project ${image.id}`}
-                                        className="w-full h-auto object-cover transition-transform duration-[2000ms] group-hover:scale-110"
+                                        className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110"
                                     />
 
                                     {/* Overlay */}
@@ -189,41 +200,19 @@ const GalleryPage = () => {
             {/* Lightbox Modal */}
             {selectedImage && (
                 <div
-                    className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex items-center justify-center p-4 md:p-10 transition-all duration-500"
+                    className="fixed inset-0 bg-white/40 backdrop-blur-[40px] z-[9999] flex items-center justify-center p-6 md:p-12 transition-all duration-700 ease-out animate-in fade-in"
                     onClick={closeModal}
                 >
-                    <button
-                        className="absolute top-8 right-8 text-white/50 hover:text-white transition-colors z-[110]"
-                        onClick={closeModal}
-                    >
-                        <X size={32} />
-                    </button>
+                    <button onClick={closeModal} className="absolute top-10 right-10 w-12 h-12 flex items-center justify-center transition-all duration-300 z-[10000] group"><X size={24} className="text-slate-800" /></button>
+                    <button onClick={prevImage} className="fixed left-6 md:left-10 top-1/2 -translate-y-1/2 w-16 h-16 flex items-center justify-center hover:scale-110 transition-all"><ChevronLeft size={48} className="text-slate-800" strokeWidth={1} /></button>
+                    <button onClick={nextImage} className="fixed right-6 md:right-10 top-1/2 -translate-y-1/2 w-16 h-16 flex items-center justify-center hover:scale-110 transition-all"><ChevronRight size={48} className="text-slate-800" strokeWidth={1} /></button>
 
-                    <button
-                        className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-[#fae606] hover:text-black transition-all duration-300 z-[110]"
-                        onClick={prevImage}
-                    >
-                        <ChevronLeft size={28} />
-                    </button>
-
-                    <button
-                        className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-[#fae606] hover:text-black transition-all duration-300 z-[110]"
-                        onClick={nextImage}
-                    >
-                        <ChevronRight size={28} />
-                    </button>
-
-                    <div className="relative max-w-6xl w-full h-full flex items-center justify-center animate-in zoom-in duration-300" onClick={e => e.stopPropagation()}>
+                    <div className="max-w-7xl w-full h-full flex items-center justify-center relative" onClick={(e) => e.stopPropagation()}>
                         <img
                             src={`${import.meta.env.VITE_API_BASE_URL}${selectedImage.image_url}`}
                             alt="Full Preview"
-                            className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl shadow-yellow-900/10"
+                            className="max-w-full max-h-[85vh] object-contain shadow-2xl rounded-lg"
                         />
-                        <div className="absolute -bottom-12 left-0 right-0 text-center">
-                            <p className="text-white/40 text-xs tracking-[0.2em] font-bold uppercase">
-                                Masterpiece Installation {selectedIndex + 1} of {images.length}
-                            </p>
-                        </div>
                     </div>
                 </div>
             )}

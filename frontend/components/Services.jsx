@@ -1,5 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ArrowUpRight, ShieldCheck, Layers, Ruler, Truck, ChevronRight } from 'lucide-react';
+import premiumQualityImg from '../images/Premium-Quality.jpg';
+import qualityAssuranceImg from '../images/Quality-Assurance.jpg';
+import globalLogisticsImg from '../images/Global-Logistics.jpg';
+import reliableExportImg from '../images/about (2).jpg';
 
 const Services = () => {
     const [activeIdx, setActiveIdx] = useState(0);
@@ -49,7 +53,7 @@ const Services = () => {
                 "Timely dispatch and transparent documentation for smooth trade",
                 "Trusted by architects, contractors, and importers worldwide"
             ],
-            image: "https://images.unsplash.com/photo-1628163486121-72991870df22?auto=format&fit=crop&q=80&w=1200",
+            image: premiumQualityImg,
             icon: ShieldCheck
         },
         {
@@ -63,7 +67,7 @@ const Services = () => {
                 "Timely dispatch and transparent documentation for smooth trade",
                 "Trusted by architects, contractors, and importers worldwide"
             ],
-            image: "https://images.unsplash.com/photo-1517581177682-a085bb7ffb15?auto=format&fit=crop&q=80&w=1200",
+            image: qualityAssuranceImg,
             icon: Layers
         },
         {
@@ -77,7 +81,7 @@ const Services = () => {
                 "Perfect for residential, commercial, and architectural applications",
                 "Stones that match every design vision"
             ],
-            image: "https://images.unsplash.com/photo-1590482422730-804192477321?auto=format&fit=crop&q=80&w=1200",
+            image: globalLogisticsImg,
             icon: Ruler
         },
         {
@@ -91,7 +95,7 @@ const Services = () => {
                 "Commitment to transparency, trust, and long-term relationships",
                 "Reliable after-sales assistance"
             ],
-            image: "https://images.unsplash.com/photo-1518733057094-95b53143d2a7?auto=format&fit=crop&q=80&w=1200",
+            image: reliableExportImg,
             icon: Truck
         }
     ];

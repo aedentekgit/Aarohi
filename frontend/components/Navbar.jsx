@@ -8,6 +8,15 @@ const Navbar = () => {
   const location = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isLangOpen, setIsLangOpen] = useState(false);
+  const [currentLang, setCurrentLang] = useState('ENGLISH');
+
+  const languages = [
+    { name: 'ENGLISH', code: 'EN' },
+    { name: 'ARABIC', code: 'AR' },
+    { name: 'POLISH', code: 'PL' },
+    { name: 'RUSSIAN', code: 'RU' }
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -142,7 +151,15 @@ const Navbar = () => {
               />
             </Link>
 
-            <div className="relative z-[2000]">
+            <div className="relative z-[2000] flex items-center gap-6">
+              {/* Language Selector Mobile Toggle */}
+              <button
+                onClick={() => setIsLangOpen(!isLangOpen)}
+                className="text-white text-[10px] font-bold tracking-[0.2em] border border-white/20 rounded-full px-4 py-2 bg-white/5"
+              >
+                {currentLang.slice(0, 2)}
+              </button>
+
               <button
                 className="text-white w-10 h-10 flex items-center justify-end focus:outline-none"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -229,10 +246,57 @@ const Navbar = () => {
                   </a>
                 ))}
               </div>
+
+              {/* Language List in Mobile Menu */}
+              <div className="pt-8 border-t border-white/5 space-y-4">
+                <p className="text-zinc-700 text-[9px] font-black tracking-[0.5em] uppercase">Select Language</p>
+                <div className="grid grid-cols-2 gap-4">
+                  {languages.map((lang) => (
+                    <button
+                      key={lang.code}
+                      onClick={() => {
+                        setCurrentLang(lang.name);
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className={`text-left text-[11px] font-bold tracking-[0.2em] transition-all duration-300 ${currentLang === lang.name ? 'text-[#fae606]' : 'text-zinc-500'}`}
+                    >
+                      {lang.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
             <div className={`w-full sm:w-auto flex justify-center sm:justify-end opacity-10 transition-all duration-1000 ${isMobileMenuOpen ? 'opacity-10 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{ transitionDelay: '900ms' }}>
               <p className="text-white text-4xl sm:text-6xl md:text-[100px] font-black tracking-tighter uppercase whitespace-nowrap">Aarohi Exports</p>
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Fixed Language Selector - Bottom Right */}
+      <div className="fixed bottom-8 right-8 z-50">
+        <div className="relative">
+          <button
+            onClick={() => setIsLangOpen(!isLangOpen)}
+            className="flex items-center gap-3 text-[11px] font-black tracking-[0.3em] text-white hover:text-[#fae606] transition-all duration-300 py-3 px-5 border border-white/20 rounded-full bg-black/80 backdrop-blur-xl shadow-2xl hover:shadow-[#fae606]/20 hover:border-[#fae606]/50"
+          >
+            <span>{currentLang}</span>
+            <div className={`w-1.5 h-1.5 rounded-full bg-[#fae606] transition-transform duration-500 ${isLangOpen ? 'scale-150 rotate-180' : 'scale-100'}`}></div>
+          </button>
+
+          <div className={`absolute bottom-full right-0 mb-4 w-52 bg-black/95 backdrop-blur-2xl border border-white/20 rounded-2xl overflow-hidden shadow-2xl transition-all duration-500 origin-bottom-right ${isLangOpen ? 'opacity-100 scale-100 translate-y-0 pointer-events-auto' : 'opacity-0 scale-95 translate-y-2 pointer-events-none'}`}>
+            {languages.map((lang, index) => (
+              <button
+                key={lang.code}
+                onClick={() => {
+                  setCurrentLang(lang.name);
+                  setIsLangOpen(false);
+                }}
+                className={`w-full text-left px-6 py-4 text-[10px] font-bold tracking-[0.2em] transition-all duration-300 ${currentLang === lang.name ? 'text-[#fae606] bg-white/10' : 'text-white/70 hover:text-white hover:bg-white/5'} ${index !== languages.length - 1 ? 'border-b border-white/5' : ''}`}
+              >
+                {lang.name}
+              </button>
+            ))}
           </div>
         </div>
       </div>

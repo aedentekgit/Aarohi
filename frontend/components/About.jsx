@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import aboutImg from '../images/about-main.jpg';
+import videoBg from '../images/Video.mp4';
 import { Leaf, Award, Zap, ArrowRight } from 'lucide-react';
 
 const About = () => {
@@ -40,14 +40,21 @@ const About = () => {
             <div className="container mx-auto px-6 md:px-12 lg:px-20 max-w-[1440px]">
                 <div className="flex flex-col lg:flex-row gap-16 lg:gap-24 items-center">
 
-                    {/* Left: Image with Experience Badge */}
+                    {/* Left: Video Content with Experience Badge */}
                     <div className="w-full lg:w-1/2 relative">
                         {/* Outset Border Frame */}
                         <div className="absolute -inset-4 border border-[#fae606]/30 rounded-[100px_0_100px_0] md:rounded-[150px_0_150px_0] pointer-events-none transform -rotate-1"></div>
 
                         <div className="relative z-10 overflow-hidden group rounded-[100px_0_100px_0] md:rounded-[150px_0_150px_0] shadow-2xl">
                             <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500 z-10"></div>
-                            <img src={aboutImg} alt="About Us" className="w-full h-[500px] md:h-[700px] object-cover transform scale-100 group-hover:scale-110 transition-transform duration-1000 ease-out" />
+                            <video
+                                src={videoBg}
+                                autoPlay
+                                loop
+                                muted
+                                playsInline
+                                className="w-full h-[500px] md:h-[700px] object-cover transform scale-100 group-hover:scale-105 transition-transform duration-1000 ease-out"
+                            />
                         </div>
 
                         {/* Decorative background element */}

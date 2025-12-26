@@ -1,13 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { Mail, Phone, MapPin, Send, Globe, MessageSquare, Clock, ArrowRight, Shield, Star, CheckCircle2, Building2, Users, Award } from 'lucide-react';
-
-
-// Granite Showroom Background Image
-const contactBanner = "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&q=80&w=2000";
+import contactImg from '../images/contact.jpg';
 
 const Contact = () => {
     const [isVisible, setIsVisible] = useState(false);
     const [scrollY, setScrollY] = useState(0);
+
+    const [formData, setFormData] = useState({
+        fullName: '',
+        email: '',
+        phoneNumber: '',
+        message: ''
+    });
+
+    const [errors, setErrors] = useState({});
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitStatus, setSubmitStatus] = useState(null); // 'success', 'error'
 
     useEffect(() => {
         setIsVisible(true);
@@ -23,7 +31,7 @@ const Contact = () => {
         {
             icon: Mail,
             title: "Email Us",
-            value: "aarohiexports@gmail.com",
+            value: "sabarishthavamani@gmail.com",
             detail: "Response within 24 hours",
             bgColor: "bg-[#fae606]/20",
             iconColor: "text-[#fae606]"
@@ -40,7 +48,7 @@ const Contact = () => {
             icon: MapPin,
             title: "Visit Us",
             value: "Plot No. 36, 1st Floor, 3rd Cross",
-            detail: "Near AR HOSPITAL, KK Nagar, Tamil Nadu 625020",
+            detail: "KK Nagar, Tamil Nadu 625020",
             bgColor: "bg-[#fae606]/20",
             iconColor: "text-[#fae606]"
         }
@@ -64,6 +72,101 @@ const Contact = () => {
         }
     ];
 
+    const validateForm = () => {
+        const newErrors = {};
+
+        if (!formData.fullName.trim()) {
+            newErrors.fullName = "Full name is required";
+        } else if (formData.fullName.trim().length < 3) {
+            newErrors.fullName = "Name must be at least 3 characters";
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!formData.email.trim()) {
+            newErrors.email = "Email address is required";
+        } else if (!emailRegex.test(formData.email)) {
+            newErrors.email = "Please enter a valid email address";
+        }
+
+        const phoneRegex = /^\+?[\d\s-]{10,}$/;
+        if (!formData.phoneNumber.trim()) {
+            newErrors.phoneNumber = "Phone number is required";
+        } else if (!phoneRegex.test(formData.phoneNumber)) {
+            newErrors.phoneNumber = "Please enter a valid phone number";
+        }
+
+        if (!formData.message.trim()) {
+            newErrors.message = "Message is required";
+        } else if (formData.message.trim().length < 10) {
+            newErrors.message = "Message must be at least 10 characters";
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+        // Clear error when user starts typing
+        if (errors[name]) {
+            setErrors(prev => {
+                const newErrors = { ...prev };
+                delete newErrors[name];
+                return newErrors;
+            });
+        }
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        if (!validateForm()) return;
+
+        setIsSubmitting(true);
+        setSubmitStatus(null);
+
+        try {
+            // EmailJS Configuration
+            // IMPORTANT: Replace these with your actual EmailJS credentials
+            // Get them from: https://www.emailjs.com/
+            const serviceId = 'YOUR_SERVICE_ID';  // Replace with your EmailJS Service ID
+            const templateId = 'YOUR_TEMPLATE_ID'; // Replace with your EmailJS Template ID
+            const publicKey = 'YOUR_PUBLIC_KEY';   // Replace with your EmailJS Public Key
+
+            // Import EmailJS
+            const emailjs = (await import('@emailjs/browser')).default;
+
+            // Prepare template parameters
+            const templateParams = {
+                from_name: formData.fullName,
+                from_email: formData.email,
+                phone_number: formData.phoneNumber,
+                message: formData.message,
+                to_email: 'sabarishthavamani@gmail.com'
+            };
+
+            // Send email using EmailJS
+            await emailjs.send(
+                serviceId,
+                templateId,
+                templateParams,
+                publicKey
+            );
+
+            console.log('Email sent successfully!');
+            setSubmitStatus('success');
+            setFormData({ fullName: '', email: '', phoneNumber: '', message: '' });
+        } catch (error) {
+            console.error('Email sending failed:', error);
+            setSubmitStatus('error');
+        } finally {
+            setIsSubmitting(false);
+            // Hide status after 5 seconds
+            setTimeout(() => setSubmitStatus(null), 5000);
+        }
+    };
+
     return (
         <div className="min-h-screen bg-white font-urbanist selection:bg-[#fae606] selection:text-black">
 
@@ -75,7 +178,7 @@ const Contact = () => {
                     style={{ transform: `translateY(${scrollY * 0.5}px)` }}
                 >
                     <img
-                        src={contactBanner}
+                        src={contactImg}
                         alt="Contact Us - Granite Showroom"
                         className={`w-full h-full object-cover transition-transform duration-[5000ms] ease-out ${isVisible ? 'scale-100' : 'scale-125'}`}
                     />
@@ -164,59 +267,100 @@ const Contact = () => {
                                     </p>
                                 </div>
 
-                                <form className="space-y-6">
+                                <form onSubmit={handleSubmit} className="space-y-6">
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                         <div className="space-y-2">
-                                            <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Full Name</label>
+                                            <div className="flex justify-between">
+                                                <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Full Name</label>
+                                                {errors.fullName && <span className="text-[10px] text-red-500 font-bold uppercase">{errors.fullName}</span>}
+                                            </div>
                                             <input
                                                 type="text"
-                                                className="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl focus:ring-2 focus:ring-[#fae606]/50 focus:border-[#fae606] transition-all outline-none text-slate-900"
+                                                name="fullName"
+                                                value={formData.fullName}
+                                                onChange={handleChange}
+                                                className={`w-full bg-slate-50 border ${errors.fullName ? 'border-red-300 ring-1 ring-red-100' : 'border-slate-200'} px-5 py-4 rounded-2xl focus:ring-2 focus:ring-[#fae606]/50 focus:border-[#fae606] transition-all outline-none text-slate-900`}
                                                 placeholder="John Doe"
                                             />
                                         </div>
                                         <div className="space-y-2">
-                                            <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Email Address</label>
+                                            <div className="flex justify-between">
+                                                <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Email Address</label>
+                                                {errors.email && <span className="text-[10px] text-red-500 font-bold uppercase">{errors.email}</span>}
+                                            </div>
                                             <input
                                                 type="email"
-                                                className="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl focus:ring-2 focus:ring-[#fae606]/50 focus:border-[#fae606] transition-all outline-none text-slate-900"
+                                                name="email"
+                                                value={formData.email}
+                                                onChange={handleChange}
+                                                className={`w-full bg-slate-50 border ${errors.email ? 'border-red-300 ring-1 ring-red-100' : 'border-slate-200'} px-5 py-4 rounded-2xl focus:ring-2 focus:ring-[#fae606]/50 focus:border-[#fae606] transition-all outline-none text-slate-900`}
                                                 placeholder="john@example.com"
                                             />
                                         </div>
                                     </div>
 
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                        <div className="space-y-2">
+                                    <div className="space-y-2">
+                                        <div className="flex justify-between">
                                             <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Phone Number</label>
-                                            <input
-                                                type="tel"
-                                                className="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl focus:ring-2 focus:ring-[#fae606]/50 focus:border-[#fae606] transition-all outline-none text-slate-900"
-                                                placeholder="+91 98765 43210"
-                                            />
+                                            {errors.phoneNumber && <span className="text-[10px] text-red-500 font-bold uppercase">{errors.phoneNumber}</span>}
                                         </div>
-                                        <div className="space-y-2">
-                                            <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Subject</label>
-                                            <select className="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl focus:ring-2 focus:ring-[#fae606]/50 focus:border-[#fae606] transition-all outline-none text-slate-900 appearance-none cursor-pointer">
-                                                <option>General Inquiry</option>
-                                                <option>Product Information</option>
-                                                <option>Custom Order</option>
-                                                <option>Partnership</option>
-                                            </select>
-                                        </div>
+                                        <input
+                                            type="tel"
+                                            name="phoneNumber"
+                                            value={formData.phoneNumber}
+                                            onChange={handleChange}
+                                            className={`w-full bg-slate-50 border ${errors.phoneNumber ? 'border-red-300 ring-1 ring-red-100' : 'border-slate-200'} px-5 py-4 rounded-2xl focus:ring-2 focus:ring-[#fae606]/50 focus:border-[#fae606] transition-all outline-none text-slate-900`}
+                                            placeholder="+91 98765 43210"
+                                        />
                                     </div>
 
                                     <div className="space-y-2">
-                                        <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Your Message</label>
+                                        <div className="flex justify-between">
+                                            <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Your Message</label>
+                                            {errors.message && <span className="text-[10px] text-red-500 font-bold uppercase">{errors.message}</span>}
+                                        </div>
                                         <textarea
                                             rows="4"
-                                            className="w-full bg-slate-50 border border-slate-200 px-5 py-3 rounded-2xl focus:ring-2 focus:ring-[#fae606]/50 focus:border-[#fae606] transition-all outline-none text-slate-900 resize-none"
+                                            name="message"
+                                            value={formData.message}
+                                            onChange={handleChange}
+                                            className={`w-full bg-slate-50 border ${errors.message ? 'border-red-300 ring-1 ring-red-100' : 'border-slate-200'} px-5 py-3 rounded-2xl focus:ring-2 focus:ring-[#fae606]/50 focus:border-[#fae606] transition-all outline-none text-slate-900 resize-none`}
                                             placeholder="Tell us about your project..."
                                         ></textarea>
                                     </div>
 
-                                    <button className="group w-full md:w-auto px-10 py-4 bg-[#fae606] hover:bg-[#e6d500] text-slate-900 font-bold rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 inline-flex items-center justify-center gap-2">
-                                        <span>Send Message</span>
-                                        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                                    </button>
+                                    <div className="flex flex-col md:flex-row items-center gap-6">
+                                        <button
+                                            type="submit"
+                                            disabled={isSubmitting}
+                                            className={`group w-full md:w-auto px-10 py-4 ${isSubmitting ? 'bg-slate-200 text-slate-400 cursor-not-allowed' : 'bg-[#fae606] hover:bg-[#e6d500] text-slate-900'} font-bold rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 inline-flex items-center justify-center gap-2`}
+                                        >
+                                            {isSubmitting ? (
+                                                <>
+                                                    <div className="w-5 h-5 border-2 border-slate-400 border-t-slate-800 rounded-full animate-spin"></div>
+                                                    <span>Sending...</span>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <span>Send Message</span>
+                                                    <Send className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                                                </>
+                                            )}
+                                        </button>
+
+                                        {submitStatus === 'success' && (
+                                            <div className="flex items-center gap-2 text-green-600 animate-in fade-in slide-in-from-left-4">
+                                                <CheckCircle2 size={20} />
+                                                <span className="font-bold text-sm uppercase tracking-wider">Message Sent Successfully!</span>
+                                            </div>
+                                        )}
+                                        {submitStatus === 'error' && (
+                                            <div className="flex items-center gap-2 text-red-600 animate-in fade-in slide-in-from-left-4">
+                                                <Shield size={20} />
+                                                <span className="font-bold text-sm uppercase tracking-wider">Failed to send. Please try again.</span>
+                                            </div>
+                                        )}
+                                    </div>
                                 </form>
                             </div>
 

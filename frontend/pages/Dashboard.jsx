@@ -111,7 +111,7 @@ const Dashboard = () => {
                 </header>
 
                 {/* Main Content */}
-                <main className="flex-1 overflow-y-auto p-6 lg:p-10">
+                <main className="flex-1 overflow-y-auto p-6 lg:p-10" data-lenis-prevent>
                     <div className="max-w-7xl mx-auto">
                         {/* Page Title */}
                         <div className="mb-8">
